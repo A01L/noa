@@ -188,7 +188,7 @@ class DBC {
 	}
 
 	//Get data from table
-	public static function select($table, $index, $data='a'){
+	public static function select($table, $index, $data='a', $id='none'){
 			
 		if($data != 'a'){
 			$db = $GLOBALS['db'];
@@ -216,7 +216,13 @@ class DBC {
 
 			$query = mysqli_query($db, $query);
 			$datas = mysqli_fetch_assoc($query);
-			return $query;
+
+			if($id=='none'){
+				return $query;
+			}
+			else{
+				return $datas;
+			}
 		}
     }
 

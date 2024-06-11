@@ -102,27 +102,5 @@ Router::set('/projects', 'HTML/projects.php');
 Router::set('/rangeslider', 'HTML/rangeslider.php');
 Router::set('/rating', 'HTML/rating.php');
 Router::set('/register', 'HTML/register.php');
-Router::set('/scroll', 'HTML/scroll.php');
-Router::set('/services', 'HTML/services.php');
-Router::set('/settings', 'HTML/settings.php');
-Router::set('/sweetalert', 'HTML/sweetalert.php');
-Router::set('/switcher', 'HTML/switcher.php');
-Router::set('/table-editable', 'HTML/table-editable.php');
-Router::set('/tables', 'HTML/tables.php');
-Router::set('/tabs', 'HTML/tabs.php');
-Router::set('/tags', 'HTML/tags.php');
-Router::set('/task-create', 'HTML/task-create.php');
-Router::set('/task-edit', 'HTML/task-edit.php');
-Router::set('/tasks-list', 'HTML/tasks-list.php');
-Router::set('/terms', 'HTML/terms.php');
-Router::set('/thumbnails', 'HTML/thumbnails.php');
-Router::set('/ticket-details', 'HTML/ticket-details.php');
-Router::set('/timeline', 'HTML/timeline.php');
-Router::set('/tooltipandpopover', 'HTML/tooltipandpopover.php');
-Router::set('/treeview', 'HTML/treeview.php');
-Router::set('/typography', 'HTML/typography.php');
-Router::set('/users-list', 'HTML/users-list.php');
-Router::set('/width', 'HTML/width.php');
-Router::set('/wishlist', 'HTML/wishlist.php');
-Router::set('/wysiwyag', 'HTML/wysiwyag.php');
+
 ?>

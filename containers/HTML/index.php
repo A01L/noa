@@ -80,7 +80,7 @@ Session::not('USER', '/login');
 												<p class="text-muted mb-0 mt-2 fs-12">
 													<span class="icn-box text-success fw-semibold fs-13 me-1">
 														<i class='fa fa-long-arrow-up'></i>
-														42%</span>
+														<?=100-(DBC::count('words', ['status'=>1])+DBC::count('video', ['status'=>1]))?>%</span>
 													коэфицент барлық уақытта
 												</p>
 											</div>
@@ -103,7 +103,7 @@ Session::not('USER', '/login');
 												<p class="text-muted mb-0 mt-2 fs-12">
 													<span class="icn-box text-success fw-semibold fs-13 me-1">
 														<i class='fa fa-long-arrow-up'></i>
-														27%</span>
+														<?=100-(DBC::count('words', ['uid'=>$_SESSION['USER']['id']])+DBC::count('video', ['uid'=>$_SESSION['USER']['id']]))?>%</span>
 													Коэфицент барлық кезде
 												</p>
 											</div>
@@ -169,6 +169,31 @@ Session::not('USER', '/login');
 																	<div class="d-flex align-items-center">
 																		<div class="mt-0">
 																			<h5 class="mb-1 fs-13 fw-normal text-dark">Бейне сабақ: <span class="fs-13 fw-semibold ms-1"><?=$row['url']?></span></h5>
+																		</div>
+																		<span class="ms-auto fs-13">
+																			<span class="float-end text-dark">Орталық порталда</span>
+																		</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</a>
+													<?php
+													}
+
+													$result = DBC::select('lessons', ['uid'=>$_SESSION['USER']['id']]);
+
+													foreach ($result as $row) {
+													?>
+													<a href="tab?id=<?=$row['id']?>" target="_blank" class="border-0">
+														<div class="list-group-item border-0">
+															<div class="media mt-0 align-items-center">
+																<div class="transaction-icon"><i class="fe fe-chevrons-right"></i>
+																</div>
+																<div class="media-body">
+																	<div class="d-flex align-items-center">
+																		<div class="mt-0">
+																			<h5 class="mb-1 fs-13 fw-normal text-dark">Жаңа сабақ: <span class="fs-13 fw-semibold ms-1"><?=$row['title']?></span></h5>
 																		</div>
 																		<span class="ms-auto fs-13">
 																			<span class="float-end text-dark">Орталық порталда</span>

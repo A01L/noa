@@ -1,18 +1,11 @@
 <?php
 Session::not('USER', '/login');
+if(!isset($_GET['id'])){
+    Router::redirect('/lessons');
+}
 
-if(isset($_POST['title']) && isset($_POST['editor-style01'])){
-	$data['uid'] 		= $_SESSION['USER']['id'];
-	$data['title'] 		= $_POST['title'];
-	$data['content'] 	= base64_encode($_POST['editor-style01']);
-	$data['status']		= 1;
-	DBC::insert('lessons', $data);
-	Router::redirect('/lessons');
-}
-elseif(isset($_GET['dell'])){
-	DBC::delete('lessons', ['id'=>$_GET['dell']]);
-	Router::redirect('/lessons');
-}
+$tab = DBC::select('lessons', ['id'=>intval($_GET['id'])], 'a', 1);
+// $tab = mysqli_fetch_array($tab);
 ?>
 
 <!doctype html>
@@ -32,7 +25,7 @@ elseif(isset($_GET['dell'])){
 	<link rel="shortcut icon" type="image/x-icon" href="containers/assets/images/brand/favicon.ico"/>
 
 	<!-- TITLE -->
-	<title>Noa – Сабақтар</title>
+	<title>Noa – <?=$tab['title']?></title>
 
 	<!-- BOOTSTRAP CSS -->
 	<link id="style" href="containers/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -83,13 +76,13 @@ elseif(isset($_GET['dell'])){
 
 						<!-- ROW-1 -->
 						<div class="row">
-							<div class="col-lg-6 col-sm-12 col-md-6 col-xl-6">
+							<div class="col-lg-12 col-sm-12 col-md-12 col-xl-12">
 								<div class="card" style="height: 70vh; overflow-y: scroll;">
 									<div class="card-body">
 										<div class="row">
 											<div class="col">
-												<h3 class="mb-2 fw-semibold"><?=DBC::count('lessons', ['status'=>1])?></h3>
-												<p class="text-muted fs-13 mb-0">Ортақ сабақтар</p>
+												<h3 class="mb-2 fw-semibold"><?=$tab['title']?></h3>
+												<p class="text-muted fs-13 mb-0">Автор: <?=DBC::select('users', ['id'=>$tab['uid']], 'name')?></p>
 											</div>
 											<div class="col col-auto top-icn dash">
 												<div class="counter-icon bg-primary dash ms-auto box-shadow-primary">
@@ -99,70 +92,7 @@ elseif(isset($_GET['dell'])){
 										</div>
                                         <hr>
 
-                                        <?php
-                                        $result = DBC::show('lessons');
-
-                                        foreach($result as $row){
-                                            ?>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <h4 class="mb-2 fw-semibold"><a href="tab?id=<?=$row['id']?>" target='_blank'><?=$row['title']?></a></h4>
-                                                </div>
-                                            </div>
-                                        <hr>    
-                                            <?
-                                        }
-                                        ?>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6 col-sm-12 col-md-6 col-xl-6">
-								<div class="card" style="height: 70vh; overflow-y: scroll;">
-									<div class="card-body">
-										<div class="row">
-											<div class="col">
-												<h3 class="mb-2 fw-semibold"><?=DBC::count('lessons', ['uid'=>$_SESSION['USER']['id']])?></h3>
-												<p class="text-muted fs-13 mb-0">Жеке сабақтар</p>
-											</div>
-											<div class="col col-auto top-icn dash">
-												<div class="counter-icon bg-info dash ms-auto box-shadow-info">
-													<i class="fa fa-user" style="color: white;"></i>
-                                                </div>
-											</div>
-										</div>
-
-										<p class="text-muted">Ортаға өз біліміңді қоста баршаға комектес!</p>
-													<form class="form-horizontal" enctype="multipart/form-data"  action="/lessons" method="post">
-														<div class="form-group">
-															<input type="text" name="title" class="form-control" id="inputName" placeholder="Сабақ тақырыбы...">
-														</div>
-														<div class="form-group">
-															<textarea class="content" name="editor-style01"></textarea>
-														</div>
-														<div class="form-group mt-3">
-															<div>
-																<button class="btn btn-primary">Сабақты қосу</button>
-															</div>
-														</div>
-													</form>
-
-										<hr>
-
-                                        <?php
-                                        $result = DBC::select('lessons', ['uid'=>$_SESSION['USER']['id']]);
-
-                                        foreach($result as $row){
-                                            ?>
-                                            <div class="row">
-                                                <div class="col">
-												 <h4 class="mb-2 fw-semibold"><a href="lessons?dell=<?=$row['id']?>" style="padding-right: 20px;"><i class="fa fa-close"></i> </a>  <?=$row['title']?></h4>
-                                                </div>
-                                            </div>
-                                        <hr>    
-                                            <?
-                                        }
-                                        ?>
-
+                                        <?=base64_decode($tab['content'])?>
 									</div>
 								</div>
 							</div>
@@ -177,29 +107,6 @@ elseif(isset($_GET['dell'])){
 
 		<?php require_once "containers/HTML/block/footer.php"; ?>
 	</div>
-
-		<!--Modal-->
-		<div class="modal fade"  id="modalQuill">
-			<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h6 class="modal-title">Create New Document</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
-					</div>
-					<div class="modal-body pd-0">
-						<div class="ql-wrapper ql-wrapper-modal">
-							<div class="flex-1" id="quillEditorModal2">
-
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button class="btn btn-primary" >Save changes</button>
-						<button class="btn btn-light" data-bs-dismiss="modal" aria-label="Close" >Cancel</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--/Modal-->
 
 	<!-- BACK-TO-TOP -->
 	<a href="#top" id="back-to-top"><i class="fa fa-long-arrow-up"></i></a>
